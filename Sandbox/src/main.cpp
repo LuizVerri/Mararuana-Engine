@@ -1,22 +1,26 @@
 #include <Mararuana.h>
 
-class Sandbox : public Mar::Application
+class Sandbox final : public Mar::Application
 {
-
 public:
-	Sandbox()
-	{
+    Sandbox()
+        : Mar::Application(Mar::ApplicationSpecification{})
+    {
+        MAR_SUBSCRIBE(GetEventManager(), Mar::KeyPressedEvent,
+            {
+                MAR_CORE_INFO("Key pressed: {}", e.key);
 
-	}
-
-	~Sandbox()
-	{
-
-	}
-
+                if (e.key == 42)
+                {
+                    MAR_CORE_TRACE("[EASTER EGG] 42 detectado - encerrando aplicacao");
+                    Mar::WindowCloseEvent closeEvent{};
+                    (void)GetEventManager().Push(closeEvent);
+                }
+            });
+    }
 };
 
 Mar::Application* Mar::CreateApplication()
 {
-	return new Sandbox();
+    return new Sandbox();
 }
