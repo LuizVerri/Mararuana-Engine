@@ -1,5 +1,2 @@
-# Ignorar arquivos de build do CMake
-/out/
-
-# Ignorar configurações de IDE
-/.vs/
+out/
+.vs/
