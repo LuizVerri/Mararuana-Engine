@@ -116,20 +116,20 @@ namespace Mar {
         inline std::atomic<uint64_t> g_EmitCount[TotalEventTypes]{};
         inline std::atomic<uint64_t> g_DispatchCount[TotalEventTypes]{};
 
-        inline MAR_FORCEINLINE void RecordEmit(EventType t) noexcept {
+        MAR_FORCEINLINE void RecordEmit(EventType t) noexcept {
             const size_t v = static_cast<size_t>(t);
             if (MAR_UNLIKELY(v == 0u)) return;
             const size_t i = v - 1u;
             if (MAR_LIKELY(i < TotalEventTypes))
                 g_EmitCount[i].fetch_add(1u, std::memory_order_relaxed);
         }
-        inline MAR_FORCEINLINE void RecordDispatch(size_t index) noexcept {
+        MAR_FORCEINLINE void RecordDispatch(size_t index) noexcept {
             if (MAR_LIKELY(index < TotalEventTypes))
                 g_DispatchCount[index].fetch_add(1u, std::memory_order_relaxed);
         }
 #else
-        inline MAR_FORCEINLINE void RecordEmit(EventType)  noexcept {}
-        inline MAR_FORCEINLINE void RecordDispatch(size_t) noexcept {}
+        MAR_FORCEINLINE void RecordEmit(EventType)  noexcept {}
+        MAR_FORCEINLINE void RecordDispatch(size_t) noexcept {}
 #endif
 
         // ═══════════════════════════════════════════════════════════════════════
@@ -145,7 +145,7 @@ namespace Mar {
 
         // Escreve exatamente 48 bytes (PAYLOAD_SIZE) para o payload do head slot.
         // dst deve estar alinhado em 16 bytes.
-        inline MAR_FORCEINLINE void store_48(std::byte* MAR_RESTRICT dst,
+        MAR_FORCEINLINE void store_48(std::byte* MAR_RESTRICT dst,
             const void* MAR_RESTRICT src) noexcept
         {
 #if defined(MAR_ENABLE_SSE2)
@@ -192,7 +192,7 @@ namespace Mar {
         // Escreve exatamente CONT_PAYLOAD_SIZE (60) bytes para o payload de
         // um continuation slot. dst está no byte 4 do slot (alinhado em 4 B).
         // Dois overlapping stores de 256 bits cobrem [0..31] e [28..59].
-        inline MAR_FORCEINLINE void avx_write_60(std::byte* MAR_RESTRICT dst,
+        MAR_FORCEINLINE void avx_write_60(std::byte* MAR_RESTRICT dst,
             const std::byte* MAR_RESTRICT src) noexcept
         {
 #if defined(MAR_ENABLE_AVX2)
@@ -210,7 +210,7 @@ namespace Mar {
         // ═══════════════════════════════════════════════════════════════════════
 
         // Copia exatamente 48 bytes do payload do head slot (src alinhado em 16 B).
-        inline MAR_FORCEINLINE void load_48(void* MAR_RESTRICT dst,
+        MAR_FORCEINLINE void load_48(void* MAR_RESTRICT dst,
             const void* MAR_RESTRICT src) noexcept
         {
 #if defined(MAR_ENABLE_AVX2)
@@ -226,7 +226,7 @@ namespace Mar {
         }
 
         // Copia exatamente 60 bytes do payload de um continuation slot (src 4-byte-aligned).
-        inline MAR_FORCEINLINE void load_60(void* MAR_RESTRICT dst,
+        MAR_FORCEINLINE void load_60(void* MAR_RESTRICT dst,
             const void* MAR_RESTRICT src) noexcept
         {
 #if defined(MAR_ENABLE_AVX2)
