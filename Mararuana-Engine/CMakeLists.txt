@@ -144,6 +144,10 @@ target_compile_definitions(${MARARUANA_LIB_NAME} PUBLIC
     MARARUANA_ENGINE_VERSION_STRING=\"${PROJECT_VERSION}\"
 )
 
+target_compile_definitions(${MARARUANA_LIB_NAME} PRIVATE 
+_WIN32_WINNT=0x0A00
+)
+
 # ------------------------------------------------------------------------------
 # Shader pipeline (GLSL -> SPIR-V)
 # ------------------------------------------------------------------------------
