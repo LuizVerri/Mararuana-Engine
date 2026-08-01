@@ -19,9 +19,15 @@
 #endif
 
 #if defined(MAR_PLATFORM_WINDOWS)
-#   define WIN32_LEAN_AND_MEAN
-#   define NOMINMAX
-#   define VK_USE_PLATFORM_WIN32_KHR
+#   ifndef WIN32_LEAN_AND_MEAN
+#       define WIN32_LEAN_AND_MEAN
+#   endif
+#   ifndef NOMINMAX
+#       define NOMINMAX
+#   endif
+#   ifndef VK_USE_PLATFORM_WIN32_KHR
+#       define VK_USE_PLATFORM_WIN32_KHR
+#   endif
 #   include <vulkan/vulkan_win32.h>
 #endif
 
